@@ -1,17 +1,17 @@
 PREFIX ?= /usr/local
 
-CFLAGS += -std=c99 -Wall -Wextra -fPIC -pedantic
+CFLAGS += -std=c99 -ggdb3 -Wall -Wextra -ggdb3 -fPIC -pedantic
 CPPFLAGS += -I./include
 
 ifeq ($(CC),gcc)
     CFLAGS += -ggdb3
 endif
 ifeq ($(CC),clang)
-    CFLAGS += -Qunused-arguments -ggdb -Weverything
+    CFLAGS += -Qunused-arguments -ggdb3 -Weverything
 endif
 
 VPATH = src
-OBJS := rdslab.o rdheap.o
+OBJS := rdcache.o rdslab.o rdheap.o
 
 ARFLAGS=rvs
 
@@ -33,7 +33,7 @@ librdslab.a: $(OBJS)
 .PHONY: install
 install:
 	install -m 0755 librdslab.so $(PREFIX)/lib
-	install -m 0755 include/rdslab.h $(PREFIX)/include
+	install -m 0755 include/rdcache.h $(PREFIX)/include
 
 .PHONY: clean
 clean:
