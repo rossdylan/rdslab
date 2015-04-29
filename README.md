@@ -2,10 +2,10 @@ rdslab is an implementation of a simple slab allocator. Slabs are currently
 defined as 2 pages of memory. These pages are then split into objects of a user
 specified size. These objects look like this:
 
-   object 1          object 2          object 3
- +----------+------+----------+------+----------+------+
- | obj_size | meta | obj_size | meta | obj_size | meta |
- +----------+------+----------+------+----------+------+
+       object 1          object 2          object 3
+     +----------+------+----------+------+----------+------+
+     | obj_size | meta | obj_size | meta | obj_size | meta |
+     +----------+------+----------+------+----------+------+
 
  The obj_size chunk contains the actual user specified memory
  the meta chunk contains a pointer to the slab this object is in. This pointer
@@ -29,13 +29,13 @@ a slab from the free_slabs list, allocates an object from it, and promotes it.
 
 The 3 linked lists are built as follows:
 
-   +------------+-----------+-----------+
-   |            ^           ^           ^
-   V            |           |           |
- rdlist_t -> rdslab_t -> rdslab_t -> rdslab_t
-   |                                    ^
-   |                                    |
-   +------------------------------------+
+       +------------+-----------+-----------+
+       |            ^           ^           ^
+       V            |           |           |
+     rdlist_t -> rdslab_t -> rdslab_t -> rdslab_t
+       |                                    ^
+       |                                    |
+       +------------------------------------+
 
 The rdlist_t struct keeps track of the head and tail of the list, which are
 just slab structs. Each slab has a pointer to the list it is in so when an
@@ -60,7 +60,9 @@ To create a new rdcache_t you call rdcache_t *rdcache_new(uint64_t obj_size);
 ```
 
 To allocate some mmeory call void *rdcache_malloc(rdcache_t *cache);
+
 To free memory call void rdcache_free(rdcache_t *cache, void *ptr);
+
 NOTE: rdcache_free doesn't actually free any memory, it just marks it as
 available for reuse.
 
